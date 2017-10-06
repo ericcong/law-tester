@@ -1,2 +1,8 @@
 .idea
 *.iml
+
+bazel-bin
+bazel-genfiles
+bazel-law-tester
+bazel-out
+bazel-testlogs
