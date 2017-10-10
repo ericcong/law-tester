@@ -1,0 +1,21 @@
+test_message = "test message"
+
+monitor = AGENT "monitor"
+foo = AGENT "foo", monitor: monitor
+bar = AGENT "bar", monitor: monitor
+
+test1 = TEST "adopted",
+    let: -> foo.init()
+    assert: -> monitor.receives "#{foo} is formed", from: foo
+
+test2 = TEST "disconnected",
+    after: test1
+    let: -> foo.dissolve()
+    assert: -> monitor.receives "#{foo} is dissolved", from: foo
+
+test3 = TEST "sent/arrived",
+    let: -> foo.send bar, test_message
+    assert: ->
+        bar.receives test_message, from: foo
+        monitor.receives "#{foo} sent a message to #{bar}", from: foo
+        monitor.receives "#{bar} receives a message from #{foo}", from: bar

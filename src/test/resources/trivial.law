@@ -1,0 +1,13 @@
+law(trivial,language(coffeescript))
+
+UPON "sent", ->
+  DO "forward"
+  return true
+
+UPON "arrived", ->
+  DO "deliver"
+  return true
+
+UPON "disconnected", ->
+  DO "quit"
+  return true

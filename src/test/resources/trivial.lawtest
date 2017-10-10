@@ -1,0 +1,8 @@
+test_message = "test message"
+
+foo = AGENT "foo"
+bar = AGENT "bar"
+
+test1 = TEST "Send a message",
+    let: -> foo.send bar, test_message
+    assert: -> bar.receives test_message, from: foo

@@ -1,0 +1,35 @@
+law(monitor,language(coffeescript))
+
+UPON "adopted", ->
+  if @arguments.monitor?
+    DO "set",
+      key: "monitor"
+      value: @arguments.monitor
+    DO "forward",
+      receiver: @arguments.monitor
+      message: "#{@self} is formed"
+  return true
+
+UPON "disconnected", ->
+  if CS("monitor")?
+    DO "forward",
+      receiver: CS("monitor")
+      message: "#{@self} is dissolved"
+  DO "quit"
+  return true
+
+UPON "sent", ->
+  if CS("monitor")?
+    DO "forward",
+      receiver: CS("monitor")
+      message: "#{@self} sent a message to #{@receiver}"
+  DO "forward"
+  return true
+
+UPON "arrived", ->
+  if CS("monitor")?
+    DO "forward",
+      receiver: CS("monitor")
+      message: "#{@self} receives a message from #{@sender}"
+  DO "deliver"
+  return true
