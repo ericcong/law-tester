@@ -1,6 +1,13 @@
 package(default_visibility = ["//visibility:public"])
 
 filegroup(
+    name = "dummy_law",
+    srcs = [
+        "dummy.law",
+    ],
+)
+
+filegroup(
     name = "trivial_law",
     srcs = [
         "trivial.law",
