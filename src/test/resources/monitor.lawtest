@@ -1,21 +1,20 @@
 test_message = "test message"
 
-monitor = AGENT "monitor"
-foo = AGENT "foo", monitor: monitor
-bar = AGENT "bar", monitor: monitor
+monitor = new Agent "monitor"
+foo = new Agent "foo", monitor: monitor
+bar = new Agent "bar", monitor: monitor
 
-test1 = TEST "adopted",
-    let: -> foo.init()
-    assert: -> monitor.receives "#{foo} is formed", from: foo
+test0 = new Test "adopted", ->
+    foo.init()
+    assert monitor.message_from(foo) is "#{foo} is formed"
 
-test2 = TEST "disconnected",
-    after: test1
-    let: -> foo.dissolve()
-    assert: -> monitor.receives "#{foo} is dissolved", from: foo
+test1 = new Test "disconnected", ->
+    after test0
+    foo.dissolve()
+    assert monitor.message_from(foo) is "#{foo} is dissolved"
 
-test3 = TEST "sent/arrived",
-    let: -> foo.send bar, test_message
-    assert: ->
-        bar.receives test_message, from: foo
-        monitor.receives "#{foo} sent a message to #{bar}", from: foo
-        monitor.receives "#{bar} receives a message from #{foo}", from: bar
+test2 = new Test "sent/arrived", ->
+    foo.send bar, test_message
+    assert bar.message_from(foo) is test_message
+    assert monitor.message_from(foo) is "#{foo} sent a message to #{bar}"
+    assert monitor.message_from(bar) is "#{bar} receives a message from #{foo}"

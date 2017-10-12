@@ -2,32 +2,32 @@ test_message = "test_message"
 ping_message = "ping"
 pong_message = "pong"
 
-foo = AGENT "foo"
-bar = AGENT "bar"
+foo = new Agent "foo"
+bar = new Agent "bar"
 
-test1 = TEST "Messages other than ping or pong can't be sent",
-    let: -> foo.send bar, test_message
-    assert: -> bar.receives null, from: foo
+test0 = new Test "Messages other than ping or pong can't be sent", ->
+    foo.send bar, test_message
+    assert not bar.message_from(foo)?
 
-test2 = TEST "Can't pong without ping",
-    let: -> foo.send bar, pong_message
-    assert: -> bar.receives null, from: foo
+test1 = new Test "Can't pong without ping", ->
+    foo.send bar, pong_message
+    assert not bar.message_from(foo)?
 
-test3 = TEST "Ping",
-    let: -> foo.send bar, ping_message
-    assert: -> bar.receives ping_message, from: foo
+test2 = new Test "Ping", ->
+    foo.send bar, ping_message
+    assert bar.message_from(foo) is ping_message
 
-test4 = TEST "Can't ping again before pong",
-    after: test3
-    let: -> foo.send bar, ping_message
-    assert: -> bar.receives null, from: foo
+test3 = new Test "Can't ping again before pong", ->
+    after test2
+    foo.send bar, ping_message
+    assert not bar.message_from(foo)?
 
-test5 = TEST "Pong",
-    after: test4
-    let: -> foo.send bar, pong_message
-    assert: -> bar.receives pong_message, from: foo
+test4 = new Test "Pong", ->
+    after test3
+    foo.send bar, pong_message
+    assert bar.message_from(foo) is pong_message
 
-test6 = TEST "Can ping again after pong",
-    after: test5
-    let: -> foo.send bar, ping_message
-    assert: -> bar.receives null, from: foo
+test5 = new Test "Can ping again after pong", ->
+    after test4
+    foo.send bar, ping_message
+    assert not bar.message_from(foo)?
