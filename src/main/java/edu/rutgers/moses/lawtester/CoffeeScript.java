@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 public class CoffeeScript {
   private static final String COFFEESCRIPT_PATH = "/coffee-script.js";
   private CompiledScript coffeec;
-  private ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
   public CoffeeScript() {
     String coffeecLine;
@@ -22,7 +21,8 @@ public class CoffeeScript {
         coffeecBuilder.append(coffeecLine);
       }
       coffeecBuilder.append("CoffeeScript.compile(__source__, {bare: true});");
-      this.coffeec = ((Compilable) this.engine).compile(coffeecBuilder.toString());
+      ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+      this.coffeec = ((Compilable) engine).compile(coffeecBuilder.toString());
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ScriptException e) {
