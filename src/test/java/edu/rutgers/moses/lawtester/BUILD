@@ -16,3 +16,11 @@ java_test(
         "//third_party:moses",
     ],
 )
+
+java_test(
+    name = "CoffeeScriptTest",
+    srcs = ["CoffeeScriptTest.java"],
+    deps = [
+        "//src/main/java/edu/rutgers/moses/lawtester:coffee_script",
+    ],
+)
