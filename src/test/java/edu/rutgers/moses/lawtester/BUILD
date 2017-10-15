@@ -1,26 +1,35 @@
 java_test(
-    name = "LawTesterTest",
-    srcs = ["LawTesterTest.java"],
+    name = "TrivialLawTest",
+    srcs = ["TrivialLawTest.java"],
     resources = [
-        "//src/test/resources:dummy_law",
-        "//src/test/resources:monitor_law",
-        "//src/test/resources:monitor_lawtest",
-        "//src/test/resources:pingpong_law",
-        "//src/test/resources:pingpong_lawtest",
         "//src/test/resources:trivial_law",
-        "//src/test/resources:trivial_lawtest",
     ],
     deps = [
-        "//src/main/java/edu/rutgers/moses/lawtester:law_test_result",
-        "//src/main/java/edu/rutgers/moses/lawtester:law_tester",
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
         "//third_party:moses",
     ],
 )
 
 java_test(
-    name = "CoffeeScriptTest",
-    srcs = ["CoffeeScriptTest.java"],
+    name = "PingpongLawTest",
+    srcs = ["PingpongLawTest.java"],
+    resources = [
+        "//src/test/resources:pingpong_law",
+    ],
     deps = [
-        "//src/main/java/edu/rutgers/moses/lawtester:coffee_script",
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
+        "//third_party:moses",
+    ],
+)
+
+java_test(
+    name = "MonitorLawTest",
+    srcs = ["MonitorLawTest.java"],
+    resources = [
+        "//src/test/resources:monitor_law",
+    ],
+    deps = [
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
+        "//third_party:moses",
     ],
 )

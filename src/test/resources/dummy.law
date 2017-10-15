@@ -1,5 +1,0 @@
-law(dummy,language(coffeescript))
-
-UPON "disconnected", ->
-  DO "quit"
-  return true

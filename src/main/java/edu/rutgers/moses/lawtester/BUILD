@@ -1,26 +1,21 @@
 package(default_visibility = ["//visibility:public"])
 
 java_library(
-    name = "law_test_result",
-    srcs = ["LawTestResult.java"],
-)
-
-java_library(
-    name = "coffee_script",
-    srcs = ["CoffeeScript.java"],
-    resources = [
-        "//src/main/resources:coffee_script",
-    ],
-)
-
-java_library(
-    name = "law_tester",
-    srcs = ["LawTester.java"],
-    resources = [
-        "//src/main/resources:coffee_script",
-    ],
+    name = "test_agent",
+    srcs = ["TestAgent.java"],
     deps = [
-        "//src/main/java/edu/rutgers/moses/lawtester:law_test_result",
         "//third_party:moses",
     ],
+)
+
+java_library(
+    name = "test_agent_builder",
+    srcs = ["TestAgentBuilder.java"],
+    deps = [],
+)
+
+java_library(
+    name = "receives_delegate",
+    srcs = ["ReceivesDelegate.java"],
+    deps = [],
 )

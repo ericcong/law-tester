@@ -1,8 +1,0 @@
-test_message = "test message"
-
-foo = new Agent "foo"
-bar = new Agent "bar"
-
-test0 = new Test "Send a message", ->
-    foo.send bar, test_message
-    assert bar.message_from(foo) is test_message
