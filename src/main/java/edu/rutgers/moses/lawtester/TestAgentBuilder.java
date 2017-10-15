@@ -1,6 +1,7 @@
 package edu.rutgers.moses.lawtester;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TestAgentBuilder {
@@ -10,7 +11,7 @@ public class TestAgentBuilder {
   private String controllerHost;
   private int controllerPort;
   private long deadline = DEADLINE;
-  private Map<String, String> args;
+  private Map<String, String> args = new HashMap<String, String>;
   private String name;
 
   public TestAgentBuilder setLawStream(InputStream lawStream) {
@@ -49,5 +50,30 @@ public class TestAgentBuilder {
 
   public String getControllerHost() {
     return this.controllerHost;
+  }
+
+  public int getControllerPort() {
+    return this.controllerPort;
+  }
+
+  public long getDeadline() {
+    return this.deadline;
+  }
+
+  public String getArg(String key) {
+    return this.args.get(key);
+  }
+
+  public Map<String, String> getArgs() {
+    return this.args;
+  }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public TestAgent build() {
+    return new TestAgent(
+        lawStream, controllerHost, controllerPort, deadline, args, name);
   }
 }

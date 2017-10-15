@@ -11,7 +11,7 @@ java_library(
 java_library(
     name = "test_agent_builder",
     srcs = ["TestAgentBuilder.java"],
-    deps = [],
+    deps = ["//src/main/java/edu/rutgers/moses/lawtester:test_agent"],
 )
 
 java_library(
