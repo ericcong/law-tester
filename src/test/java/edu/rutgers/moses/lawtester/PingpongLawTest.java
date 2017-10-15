@@ -1,41 +1,41 @@
 package edu.rutgers.moses.lawtester;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PingpongLawTest {
   private static String PINGPONG_LAW_PATH = "/pingpong.law";
+
+  private static String CONTROLLER_HOST = "127.0.0.1";
+  private static int CONTROLLER_PORT = 5000;
+
   private static String TEST_MESSAGE = "test";
   private static String PING_MESSAGE = "ping";
   private static String PONG_MESSAGE = "pong";
-  private static String CONTROLLER_HOST = "127.0.0.1";
-  private static int CONTROLLER_PORT = 5000;
-  private static int DEADLINE = 5;
 
-  private TestAgent foo = new TestAgentBuilder()
-      .setLawStream(PingpongLawTest.class.getResourceAsStream(PINGPONG_LAW_PATH))
+
+  private static TestAgentBuilder BASE_BUILDER = new TestAgentBuilder()
+      .setLawStream(
+          PingpongLawTest.class.getResourceAsStream(PINGPONG_LAW_PATH))
       .setControllerHost(CONTROLLER_HOST)
-      .setControllerPort(CONTROLLER_PORT)
-      .setDeadline(DEADLINE)
+      .setControllerPort(CONTROLLER_PORT);
+
+  private TestAgent foo = new TestAgentBuilder(BASE_BUILDER)
       .setName("foo")
       .build();
 
-  private TestAgent bar = new TestAgentBuilder()
-      .setLawStream(PingpongLawTest.class.getResourceAsStream(PINGPONG_LAW_PATH))
-      .setControllerHost(CONTROLLER_HOST)
-      .setControllerPort(CONTROLLER_PORT)
-      .setDeadline(DEADLINE)
+  private TestAgent bar = new TestAgentBuilder(BASE_BUILDER)
       .setName("bar")
       .build();
 
-  @BeforeEach
+  @Before
   public void init() {
     foo.init();
     bar.init();
   }
 
-  @AfterEach
+  @After
   public void kill() {
     foo.kill();
     bar.kill();
