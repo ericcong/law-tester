@@ -60,6 +60,11 @@ public class TestAgent {
     return this;
   }
 
+  public synchronized TestAgent clearInbox() {
+    this.inbox.clear();
+    return this;
+  }
+
   public TestAgent setArg(String key, String value) {
     this.args.put(key, value);
     return this;
