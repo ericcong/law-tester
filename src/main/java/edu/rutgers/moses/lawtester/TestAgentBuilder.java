@@ -1,6 +1,8 @@
 package edu.rutgers.moses.lawtester;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,13 +11,19 @@ public class TestAgentBuilder {
 
   private Map<String, String> args = new HashMap<>();
   private String controllerHost;
-  private int controllerPort;
+  private int controllerPort = 9000;
   private long deadline = DEADLINE;
   private String law;
   private String name;
   private String password = "password";
 
-  public TestAgentBuilder() {}
+  public TestAgentBuilder() {
+    try {
+      this.controllerHost = InetAddress.getLocalHost().getHostAddress();
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
+  }
 
   public TestAgentBuilder(TestAgentBuilder testAgentBuilder) {
     this.setLaw(testAgentBuilder.getLaw())

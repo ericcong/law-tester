@@ -6,17 +6,13 @@ import org.junit.Test;
 
 public class PingpongLawTest {
   private static final String PINGPONG_LAW_PATH = "/pingpong.law";
-  private static final String CONTROLLER_HOST = "127.0.1.1";
-  private static final int CONTROLLER_PORT = 9000;
   private static final String TEST_MESSAGE = "test";
   private static final String PING_MESSAGE = "ping";
   private static final String PONG_MESSAGE = "pong";
 
   private static final TestAgentBuilder BASE_BUILDER = new TestAgentBuilder()
       .setLawStream(
-          PingpongLawTest.class.getResourceAsStream(PINGPONG_LAW_PATH))
-      .setControllerHost(CONTROLLER_HOST)
-      .setControllerPort(CONTROLLER_PORT);
+          PingpongLawTest.class.getResourceAsStream(PINGPONG_LAW_PATH));
 
   private TestAgent foo =
       new TestAgentBuilder(BASE_BUILDER).setName("foo").build();

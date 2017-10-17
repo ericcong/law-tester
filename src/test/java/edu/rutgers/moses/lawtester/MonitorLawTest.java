@@ -8,14 +8,10 @@ import java.io.IOException;
 
 public class MonitorLawTest {
   private static final String MONITOR_LAW_PATH = "/monitor.law";
-  private static final String CONTROLLER_HOST = "127.0.1.1";
-  private static final int CONTROLLER_PORT = 9000;
   private static final String TEST_MESSAGE = "test";
 
   private static final TestAgentBuilder BASE_BUILDER = new TestAgentBuilder()
-      .setLawStream(MonitorLawTest.class.getResourceAsStream(MONITOR_LAW_PATH))
-      .setControllerHost(CONTROLLER_HOST)
-      .setControllerPort(CONTROLLER_PORT);
+      .setLawStream(MonitorLawTest.class.getResourceAsStream(MONITOR_LAW_PATH));
 
   private TestAgent monitor =
       new TestAgentBuilder(BASE_BUILDER).setName("monitor").build();
