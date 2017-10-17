@@ -7,13 +7,12 @@ import org.junit.Test;
 public class PingpongLawTest {
   private static String PINGPONG_LAW_PATH = "/pingpong.law";
 
-  private static String CONTROLLER_HOST = "127.0.0.1";
-  private static int CONTROLLER_PORT = 5000;
+  private static String CONTROLLER_HOST = "127.0.1.1";
+  private static int CONTROLLER_PORT = 9000;
 
   private static String TEST_MESSAGE = "test";
   private static String PING_MESSAGE = "ping";
   private static String PONG_MESSAGE = "pong";
-
 
   private static TestAgentBuilder BASE_BUILDER = new TestAgentBuilder()
       .setLawStream(
@@ -24,7 +23,6 @@ public class PingpongLawTest {
   private TestAgent foo = new TestAgentBuilder(BASE_BUILDER)
       .setName("foo")
       .build();
-
   private TestAgent bar = new TestAgentBuilder(BASE_BUILDER)
       .setName("bar")
       .build();
@@ -44,12 +42,6 @@ public class PingpongLawTest {
   @Test
   public void testNoMessagesOtherThanPingOrPong() throws Exception {
     long sendTime = foo.send(TEST_MESSAGE).to(bar);
-    assert(bar.receives(null).from(foo).after(sendTime).byDeadline());
-  }
-
-  @Test
-  public void testCantPongWithoutPing() throws Exception {
-    long sendTime = foo.send(PONG_MESSAGE).to(bar);
     assert(bar.receives(null).from(foo).after(sendTime).byDeadline());
   }
 

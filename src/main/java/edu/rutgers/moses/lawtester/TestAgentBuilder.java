@@ -1,21 +1,54 @@
 package edu.rutgers.moses.lawtester;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestAgentBuilder {
   private static long DEADLINE = 100;
 
-  private InputStream lawStream;
+  private Map<String, String> args = new HashMap<>();
   private String controllerHost;
   private int controllerPort;
   private long deadline = DEADLINE;
-  private Map<String, String> args = new HashMap<String, String>;
+  private String law;
   private String name;
+  private String password = "password";
+
+  public TestAgentBuilder() {}
+
+  public TestAgentBuilder(TestAgentBuilder testAgentBuilder) {
+    this.setLaw(testAgentBuilder.getLaw())
+        .setControllerHost(testAgentBuilder.getControllerHost())
+        .setControllerPort(testAgentBuilder.getControllerPort())
+        .setDeadline(testAgentBuilder.getDeadline())
+        .setArgs(testAgentBuilder.getArgs())
+        .setName(testAgentBuilder.getName())
+        .setPassword(testAgentBuilder.getPassword());
+  }
+
+  public TestAgentBuilder setLaw(String law) {
+    this.law = law;
+    return this;
+  }
 
   public TestAgentBuilder setLawStream(InputStream lawStream) {
-    this.lawStream = lawStream;
+    String lawLine;
+    StringBuilder lawBuilder = new StringBuilder();
+    String lineSeparator = System.getProperty("line.separator");
+
+    BufferedReader lawReader =
+        new BufferedReader(new InputStreamReader(lawStream));
+
+    try {
+      while ((lawLine = lawReader.readLine()) != null) {
+        lawBuilder.append(lawLine).append(lineSeparator);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    this.setLaw(lawBuilder.toString());
     return this;
   }
 
@@ -39,13 +72,23 @@ public class TestAgentBuilder {
     return this;
   }
 
+  public TestAgentBuilder setArgs(Map<String, String> args) {
+    this.args = new HashMap<>(args);
+    return this;
+  }
+
   public TestAgentBuilder setName(String name) {
     this.name = name;
     return this;
   }
 
-  public InputStream getLawStream() {
-    return this.lawStream;
+  public TestAgentBuilder setPassword(String password) {
+    this.password = password;
+    return this;
+  }
+
+  public String getLaw() {
+    return this.law;
   }
 
   public String getControllerHost() {
@@ -65,15 +108,30 @@ public class TestAgentBuilder {
   }
 
   public Map<String, String> getArgs() {
-    return this.args;
+    return new HashMap<>(this.args);
   }
 
   public String getName() {
     return this.name;
   }
 
+  public String getPassword() {
+    return this.password;
+  }
+
   public TestAgent build() {
-    return new TestAgent(
-        lawStream, controllerHost, controllerPort, deadline, args, name);
+    try {
+      return new TestAgent(
+          this.args,
+          this.controllerHost,
+          this.controllerPort,
+          this.deadline,
+          this.law,
+          this.name,
+          this.password);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

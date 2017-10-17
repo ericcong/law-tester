@@ -4,16 +4,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class MonitorLawTest {
   private static String MONITOR_LAW_PATH = "/monitor.law";
 
-  private static String CONTROLLER_HOST = "127.0.0.1";
-  private static int CONTROLLER_PORT = 5000;
+  private static String CONTROLLER_HOST = "127.0.1.1";
+  private static int CONTROLLER_PORT = 9000;
 
   private static String TEST_MESSAGE = "test";
 
   private static TestAgentBuilder BASE_BUILDER = new TestAgentBuilder()
-      .setLawStream(PingpongLawTest.class.getResourceAsStream(MONITOR_LAW_PATH))
+      .setLawStream(MonitorLawTest.class.getResourceAsStream(MONITOR_LAW_PATH))
       .setControllerHost(CONTROLLER_HOST)
       .setControllerPort(CONTROLLER_PORT);
 
@@ -22,53 +24,52 @@ public class MonitorLawTest {
       .build();
 
   private TestAgent foo = new TestAgentBuilder(BASE_BUILDER)
-      .setArg("monitor", monitor.getFullName())
       .setName("foo")
       .build();
 
   private TestAgent bar = new TestAgentBuilder(BASE_BUILDER)
-      .setArg("monitor", monitor.getFullName())
       .setName("bar")
       .build();
 
   @Before
-  public void initMonitor() {
+  public void init() throws IOException {
     monitor.init();
+    foo.setArg("monitor", monitor.getFullName());
+    bar.setArg("monitor", monitor.getFullName());
+    foo.init();
+    bar.init();
   }
 
   @After
   public void kill() {
-    monitor.kill();
     foo.kill();
     bar.kill();
+    monitor.kill();
   }
 
   @Test
   public void testAdopted() throws Exception {
     long initTime = foo.init();
-    assert(monitor.receives(foo.getFullName() + " is formed").from(foo)
-        .after(initTime).by(50));
+    assert(monitor.receives(foo.getFullName() + " is formed")
+        .after(initTime).by(10));
   }
 
   @Test
-  public void testAdopted() throws Exception {
-    foo.init();
+  public void testQuit() throws Exception {
     long killTime = foo.kill();
-    assert(monitor.receives(foo.getFullName() + " is dissolved").from(foo)
+    assert(monitor.receives(foo.getFullName() + " is dissolved")
         .after(killTime).byDeadline());
   }
 
   @Test
   public void testSendAndReceive() throws Exception {
-    foo.init();
-    bar.init();
     long sendTime = foo.send(TEST_MESSAGE).to(bar);
     assert(bar.receives(TEST_MESSAGE).from(foo).after(sendTime).byDeadline());
     assert(monitor.receives(
         foo.getFullName() + " sent a message to " + bar.getFullName())
-        .from(foo).thenKeep().after(sendTime).byDeadline());
+        .after(sendTime).byDeadline());
     assert(monitor.receives(
         bar.getFullName() + " receives a message from " + foo.getFullName())
-        .from(bar).after(sendTime).byDeadline());
+        .after(sendTime).byDeadline());
   }
 }

@@ -6,6 +6,7 @@ java_test(
     ],
     deps = [
         "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent_builder",
         "//third_party:moses",
         "@junit//jar",
     ],
@@ -19,6 +20,7 @@ java_test(
     ],
     deps = [
         "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent_builder",
         "//third_party:moses",
         "@junit//jar",
     ],
@@ -32,6 +34,7 @@ java_test(
     ],
     deps = [
         "//src/main/java/edu/rutgers/moses/lawtester:test_agent",
+        "//src/main/java/edu/rutgers/moses/lawtester:test_agent_builder",
         "//third_party:moses",
         "@junit//jar",
     ],
